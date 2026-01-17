@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>McDonald's Guest Recovery System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mcd-red: #DA291C;
+            --mcd-yellow: #FFC72C;
+            --mcd-dark: #27251F;
+            --mcd-light: #F5F0E5;
+            --mcd-cream: #FFFBF0;
+            --success: #2D8B47;
+            --shadow: 0 8px 32px rgba(39, 37, 31, 0.12);
+            --shadow-lg: 0 16px 48px rgba(39, 37, 31, 0.16);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, var(--mcd-cream) 0%, var(--mcd-light) 100%);
+            min-height: 100vh;
+            color: var(--mcd-dark);
+        }
+
+        /* Header */
+        .header {
+            background: var(--mcd-red);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .golden-arches {
+            font-size: 3rem;
+            color: var(--mcd-yellow);
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            line-height: 1;
+        }
+
+        .header-title {
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        .header-title h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-title p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .last-badge {
+            background: var(--mcd-yellow);
+            color: var(--mcd-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .card-header.register {
+            background: linear-gradient(135deg, var(--mcd-red) 0%, #B22318 100%);
+        }
+
+        .card-header.lookup {
+            background: linear-gradient(135deg, var(--mcd-yellow) 0%, #E5A800 100%);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .card-header.register .card-icon {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .card-header.lookup .card-icon {
+            background: rgba(39,37,31,0.1);
+        }
+
+        .card-header h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1.4rem;
+        }
+
+        .card-header.register h2 {
+            color: white;
+        }
+
+        .card-header.lookup h2 {
+            color: var(--mcd-dark);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--mcd-dark);
+            font-size: 0.9rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border: 2px solid #E5E0D5;
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: var(--mcd-cream);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--mcd-yellow);
+            box-shadow: 0 0 0 4px rgba(255, 199, 44, 0.2);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--mcd-red) 0%, #B22318 100%);
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(218, 41, 28, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--mcd-yellow) 0%, #E5A800 100%);
+            color: var(--mcd-dark);
+            width: 100%;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 199, 44, 0.4);
+        }
+
+        /* Code Display */
+        .code-display {
+            background: linear-gradient(135deg, var(--mcd-dark) 0%, #1a1915 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .code-display.show {
+            display: block;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .code-label {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--mcd-yellow);
+            letter-spacing: 4px;
+            text-shadow: 0 4px 12px rgba(255, 199, 44, 0.3);
+        }
+
+        .code-copy {
+            margin-top: 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .code-copy:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Result Card */
+        .result-card {
+            background: var(--mcd-cream);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: none;
+            border: 2px solid transparent;
+        }
+
+        .result-card.show {
+            display: block;
+            animation: slideUp 0.4s ease;
+        }
+
+        .result-card.found {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #F0FFF4 0%, #E6F7EB 100%);
+        }
+
+        .result-card.not-found {
+            border-color: var(--mcd-red);
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFE8E8 100%);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .result-status {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .result-status.found {
+            color: var(--success);
+        }
+
+        .result-status.not-found {
+            color: var(--mcd-red);
+        }
+
+        .result-details {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .result-item {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: var(--mcd-dark);
+            min-width: 100px;
+        }
+
+        .result-value {
+            color: #555;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-redeem {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-redeem:hover {
+            background: #247338;
+        }
+
+        .btn-delete {
+            background: var(--mcd-red);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #B22318;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--mcd-red);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 0.25rem;
+        }
+
+        /* Recent Entries */
+        .recent-section {
+            grid-column: 1 / -1;
+        }
+
+        .recent-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .recent-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            color: var(--mcd-dark);
+        }
+
+        .recent-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .recent-table th {
+            background: var(--mcd-dark);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        .recent-table th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+
+        .recent-table th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+
+        .recent-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #E5E0D5;
+            font-size: 0.9rem;
+        }
+
+        .recent-table tr:hover td {
+            background: var(--mcd-cream);
+        }
+
+        .status-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #E6F7EB;
+            color: var(--success);
+        }
+
+        .status-redeemed {
+            background: #E5E0D5;
+            color: #777;
+        }
+
+        .table-code {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: var(--mcd-red);
+            letter-spacing: 1px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #777;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--mcd-dark);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        /* LAST Protocol Guide */
+        .last-guide {
+            background: linear-gradient(135deg, var(--mcd-cream) 0%, white 100%);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--mcd-yellow);
+        }
+
+        .last-guide-title {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--mcd-dark);
+        }
+
+        .last-steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .last-step {
+            text-align: center;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .last-step strong {
+            color: var(--mcd-red);
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .last-steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .header, .stats-bar, .card.lookup-card, .recent-section {
+                display: none;
+            }
+            
+            .main-container {
+                display: block;
+            }
+            
+            .card {
+                box-shadow: none;
+                border: 2px solid #000;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo-section">
+            <div class="golden-arches">M</div>
+            <div class="header-title">
+                <h1>Guest Recovery System</h1>
+                <p>Complaint Management Portal</p>
+            </div>
+        </div>
+        <div class="last-badge">L.A.S.T. PROTOCOL</div>
+    </header>
+
+    <main class="main-container">
+        <!-- Stats Bar -->
+        <div class="stats-bar" style="grid-column: 1 / -1;">
+            <div class="stat-item">
+                <div class="stat-value" id="totalComplaints">0</div>
+                <div class="stat-label">Total Complaints</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="activeComplaints">0</div>
+                <div class="stat-label">Active Codes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="redeemedComplaints">0</div>
+                <div class="stat-label">Redeemed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="todayComplaints">0</div>
+                <div class="stat-label">Today</div>
+            </div>
+        </div>
+
+        <!-- Register Complaint Card -->
+        <div class="card">
+            <div class="card-header register">
+                <div class="card-icon">📝</div>
+                <h2>Register New Complaint</h2>
+            </div>
+            <div class="card-body">
+                <div class="last-guide">
+                    <div class="last-guide-title">Remember the L.A.S.T. Protocol</div>
+                    <div class="last-steps">
+                        <div class="last-step"><strong>L</strong>Listen</div>
+                        <div class="last-step"><strong>A</strong>Apologize</div>
+                        <div class="last-step"><strong>S</strong>Solve</div>
+                        <div class="last-step"><strong>T</strong>Thank</div>
+                    </div>
+                </div>
+
+                <form id="complaintForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="manager">Manager Name</label>
+                            <input type="text" id="manager" placeholder="Enter manager name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="guestName">Guest Name</label>
+                            <input type="text" id="guestName" placeholder="Enter guest name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" placeholder="Enter phone number" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="complaint">Order Complaint</label>
+                        <textarea id="complaint" placeholder="Describe the complaint in detail..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resolution">Promised Resolution</label>
+                        <select id="resolution">
+                            <option value="Free Meal">Free Meal</option>
+                            <option value="Free Combo">Free Combo</option>
+                            <option value="Free Item">Free Item</option>
+                            <option value="50% Off">50% Off Next Order</option>
+                            <option value="Free Dessert">Free Dessert</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span>Generate Recovery Code</span>
+                        <span>→</span>
+                    </button>
+                </form>
+
+                <div class="code-display" id="codeDisplay">
+                    <div class="code-label">Guest Recovery Code</div>
+                    <div class="code-value" id="generatedCode"></div>
+                    <button class="code-copy" onclick="copyCode()">📋 Copy Code</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lookup Card -->
+        <div class="card lookup-card">
+            <div class="card-header lookup">
+                <div class="card-icon">🔍</div>
+                <h2>Lookup Recovery Code</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label for="lookupCode">Enter Recovery Code</label>
+                    <input type="text" id="lookupCode" placeholder="e.g., G123" style="text-transform: uppercase; letter-spacing: 2px; font-weight: 600;">
+                </div>
+
+                <button class="btn btn-secondary" onclick="lookupCode()">
+                    <span>Search</span>
+                    <span>🔍</span>
+                </button>
+
+                <div class="result-card" id="resultCard">
+                    <div class="result-header">
+                        <span class="result-status" id="resultStatus"></span>
+                    </div>
+                    <div class="result-details" id="resultDetails"></div>
+                    <div class="action-buttons" id="actionButtons"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Entries -->
+        <div class="card recent-section">
+            <div class="card-header register">
+                <div class="card-icon">📋</div>
+                <h2>Recent Complaints</h2>
+            </div>
+            <div class="card-body">
+                <div id="recentTableContainer">
+                    <table class="recent-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Date</th>
+                                <th>Guest</th>
+                                <th>Manager</th>
+                                <th>Resolution</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentTableBody">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/>
+                    </svg>
+                    <p>No complaints registered yet</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script>
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date as default
+            document.getElementById('date').valueAsDate = new Date();
+            
+            // Load and display data
+            updateStats();
+            displayRecentComplaints();
+        });
+
+        // Generate unique code (Letter + 3 digits)
+        function generateCode() {
+            const letters = 'GRCMFST'; // Guest, Recovery, Complaint, McDonald's, Food, Service, Team
+            const letter = letters[Math.floor(Math.random() * letters.length)];
+            const numbers = Math.floor(100 + Math.random() * 900); // 100-999
+            const code = letter + numbers;
+            
+            // Check if code already exists
+            const complaints = getComplaints();
+            if (complaints.some(c => c.code === code)) {
+                return generateCode(); // Regenerate if duplicate
+            }
+            
+            return code;
+        }
+
+        // Get complaints from localStorage
+        function getComplaints() {
+            return JSON.parse(localStorage.getItem('mcdComplaints') || '[]');
+        }
+
+        // Save complaints to localStorage
+        function saveComplaints(complaints) {
+            localStorage.setItem('mcdComplaints', JSON.stringify(complaints));
+        }
+
+        // Handle form submission
+        document.getElementById('complaintForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const code = generateCode();
+            const complaint = {
+                code: code,
+                date: document.getElementById('date').value,
+                manager: document.getElementById('manager').value,
+                guestName: document.getElementById('guestName').value,
+                phone: document.getElementById('phone').value,
+                complaint: document.getElementById('complaint').value,
+                resolution: document.getElementById('resolution').value,
+                status: 'active',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Save to localStorage
+            const complaints = getComplaints();
+            complaints.unshift(complaint);
+            saveComplaints(complaints);
+            
+            // Show generated code
+            document.getElementById('generatedCode').textContent = code;
+            document.getElementById('codeDisplay').classList.add('show');
+            
+            // Update UI
+            updateStats();
+            displayRecentComplaints();
+            
+            // Show success toast
+            showToast('Complaint registered successfully!', 'success');
+            
+            // Reset form (except date and manager)
+            document.getElementById('guestName').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('complaint').value = '';
+        });
+
+        // Lookup code
+        function lookupCode() {
+            const code = document.getElementById('lookupCode').value.toUpperCase().trim();
+            const resultCard = document.getElementById('resultCard');
+            const resultStatus = document.getElementById('resultStatus');
+            const resultDetails = document.getElementById('resultDetails');
+            const actionButtons = document.getElementById('actionButtons');
+            
+            if (!code) {
+                showToast('Please enter a code', 'error');
+                return;
+            }
+            
+            const complaints = getComplaints();
+            const complaint = complaints.find(c => c.code === code);
+            
+            resultCard.classList.add('show');
+            
+            if (complaint) {
+                resultCard.className = 'result-card show found';
+                resultStatus.className = 'result-status found';
+                resultStatus.textContent = '✓ Code Found';
+                
+                const formattedDate = new Date(complaint.date).toLocaleDateString('en-US', {
+                    weekday: 'short',
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                resultDetails.innerHTML = `
+                    <div class="result-item">
+                        <span class="result-label">Code:</span>
+                        <span class="result-value" style="font-weight: 600; color: var(--mcd-red);">${complaint.code}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Date:</span>
+                        <span class="result-value">${formattedDate}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Guest:</span>
+                        <span class="result-value">${complaint.guestName}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Phone:</span>
+                        <span class="result-value">${complaint.phone}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Manager:</span>
+                        <span class="result-value">${complaint.manager}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Complaint:</span>
+                        <span class="result-value">${complaint.complaint}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Resolution:</span>
+                        <span class="result-value" style="font-weight: 600; color: var(--success);">${complaint.resolution}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Status:</span>
+                        <span class="result-value">
+                            <span class="status-badge ${complaint.status === 'active' ? 'status-active' : 'status-redeemed'}">
+                                ${complaint.status === 'active' ? 'Active' : 'Redeemed'}
+                            </span>
+                        </span>
+                    </div>
+                `;
+                
+                if (complaint.status === 'active') {
+                    actionButtons.innerHTML = `
+                        <button class="btn-action btn-redeem" onclick="redeemCode('${complaint.code}')">✓ Mark as Redeemed</button>
+                        <button class="btn-action btn-delete" onclick="deleteCode('${complaint.code}')">🗑 Delete</button>
+                    `;
+                } else {
+                    actionButtons.innerHTML = `
+                        <button class="btn-action btn-delete" onclick="deleteCode('${complaint.code}')">🗑 Delete Entry</button>
+                    `;
+                }
+            } else {
+                resultCard.className = 'result-card show not-found';
+                resultStatus.className = 'result-status not-found';
+                resultStatus.textContent = '✗ Code Not Found';
+                resultDetails.innerHTML = '<p>No complaint found with this code. Please check the code and try again.</p>';
+                actionButtons.innerHTML = '';
+            }
+        }
+
+        // Redeem code
+        function redeemCode(code) {
+            const complaints = getComplaints();
+            const index = complaints.findIndex(c => c.code === code);
+            
+            if (index !== -1) {
+                complaints[index].status = 'redeemed';
+                complaints[index].redeemedAt = new Date().toISOString();
+                saveComplaints(complaints);
+                
+                showToast('Code marked as redeemed!', 'success');
+                lookupCode(); // Refresh display
+                updateStats();
+                displayRecentComplaints();
+            }
+        }
+
+        // Delete code
+        function deleteCode(code) {
+            if (confirm('Are you sure you want to delete this entry?')) {
+                const complaints = getComplaints();
+                const filtered = complaints.filter(c => c.code !== code);
+                saveComplaints(filtered);
+                
+                showToast('Entry deleted', 'success');
+                document.getElementById('resultCard').classList.remove('show');
+                document.getElementById('lookupCode').value = '';
+                updateStats();
+                displayRecentComplaints();
+            }
+        }
+
+        // Copy code to clipboard
+        function copyCode() {
+            const code = document.getElementById('generatedCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                showToast('Code copied to clipboard!', 'success');
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            const complaints = getComplaints();
+            const today = new Date().toISOString().split('T')[0];
+            
+            document.getElementById('totalComplaints').textContent = complaints.length;
+            document.getElementById('activeComplaints').textContent = complaints.filter(c => c.status === 'active').length;
+            document.getElementById('redeemedComplaints').textContent = complaints.filter(c => c.status === 'redeemed').length;
+            document.getElementById('todayComplaints').textContent = complaints.filter(c => c.date === today).length;
+        }
+
+        // Display recent complaints
+        function displayRecentComplaints() {
+            const complaints = getComplaints();
+            const tbody = document.getElementById('recentTableBody');
+            const emptyState = document.getElementById('emptyState');
+            const tableContainer = document.getElementById('recentTableContainer');
+            
+            if (complaints.length === 0) {
+                tableContainer.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+            
+            tableContainer.style.display = 'block';
+            emptyState.style.display = 'none';
+            
+            // Show last 10 complaints
+            const recent = complaints.slice(0, 10);
+            
+            tbody.innerHTML = recent.map(c => {
+                const formattedDate = new Date(c.date).toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                return `
+                    <tr>
+                        <td class="table-code">${c.code}</td>
+                        <td>${formattedDate}</td>
+                        <td>${c.guestName}</td>
+                        <td>${c.manager}</td>
+                        <td>${c.resolution}</td>
+                        <td>
+                            <span class="status-badge ${c.status === 'active' ? 'status-active' : 'status-redeemed'}">
+                                ${c.status === 'active' ? 'Active' : 'Redeemed'}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toastMessage.textContent = message;
+            toast.className = `toast show ${type}`;
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Allow Enter key to trigger lookup
+        document.getElementById('lookupCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                lookupCode();
+            }
+        });
+    </script>
+</body>
+</html>
